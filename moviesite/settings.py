@@ -19,7 +19,7 @@ SECRET_KEY = 'django-insecure-^#v5_5z5z5z5z5z5z5z5z5z5z5z5z5z5z5z5z5z5z5z5z5z5z5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'vizio1917.pythonanywhere.com']
 
 
 # Application definition
@@ -120,7 +120,7 @@ if DEBUG:  # Development
         BASE_DIR / 'static',
     ]
 else:  # Production (PythonAnywhere)
-    STATIC_ROOT = '/home/vizio1917/vizio1917.pythonanywhere.com/static'
+    STATIC_ROOT = '/home/vizio1917/vizio1917.pythonanywhere.com/staticfiles'
 
 # Media files (User uploads)
 MEDIA_URL = '/media/'
@@ -131,7 +131,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 1209600  # 2 weeks
 
 # CSRF
-CSRF_TRUSTED_ORIGINS = ['http://localhost', 'http://127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['http://localhost', 'http://127.0.0.1', 'https://vizio1917.pythonanywhere.com']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/stable/ref/settings/#default-auto-field
