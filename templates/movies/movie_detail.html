@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ movie.title }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        {% if movie.poster %}
+            <img src="{{ movie.poster.url }}" class="img-fluid rounded" alt="{{ movie.title }}">
+        {% else %}
+            <div class="bg-light d-flex align-items-center justify-content-center" style="height: 400px;">
+                <span class="text-muted">No Image Available</span>
+            </div>
+        {% endif %}
+    </div>
+    <div class="col-md-8">
+        <h2>{{ movie.title }}</h2>
+        <div class="card mb-4">
+            <div class="card-body">
+                <p><strong>Director:</strong> {{ movie.director }}</p>
+                <p><strong>Year:</strong> {{ movie.year }}</p>
+                <p><strong>Genre:</strong> {{ movie.genre.name }}</p>
+            </div>
+        </div>
+        
+        <h3>Reviews</h3>
+        {% if reviews %}
+            {% for review in reviews %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <h6 class="card-subtitle mb-2 text-muted">{{ review.user.username }}</h6>
+                            <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+                        </div>
+                        <div class="mb-2">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= review.rating %}
+                                    <i class="fas fa-star text-warning"></i>
+                                {% else %}
+                                    <i class="far fa-star text-warning"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% if review.comment %}
+                            <p class="card-text">{{ review.comment }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted">No reviews yet. Be the first to review this movie!</p>
+        {% endif %}
+        
+        {% if user.is_authenticated %}
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5>Add Your Review</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="{{ form.rating.id_for_label }}" class="form-label">Rating</label>
+                            {{ form.rating }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.comment.id_for_label }}" class="form-label">Comment</label>
+                            {{ form.comment }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-info mt-4">
+                <a href="{% url 'login' %}">Log in</a> to leave a review.
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Movie Info</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Total Reviews:</strong> {{ reviews.count }}</p>
+                {% if user.is_staff %}
+                    <a href="{% url 'admin:index' %}" class="btn btn-sm btn-outline-primary">Manage Movies</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
