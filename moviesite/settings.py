@@ -113,7 +113,14 @@ import os
 # https://docs.djangoproject.com/en/stable/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# Distinguish between development and production
+if DEBUG:  # Development
+    STATICFILES_DIRS = [
+        BASE_DIR / 'static',
+    ]
+else:  # Production (PythonAnywhere)
+    STATIC_ROOT = '/home/vizio1917/vizio1917.pythonanywhere.com/static'
 
 # Media files (User uploads)
 MEDIA_URL = '/media/'
